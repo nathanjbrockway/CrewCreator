@@ -1,4 +1,5 @@
 class SectionsController < ApplicationController
+  require 'csv'
   before_action :is_admin, only: [:new , :create, :edit, :update, :remove, :destroy, :roster, :update_roster]
   before_action :is_student, only: [:join, :leave]
   
@@ -56,6 +57,11 @@ class SectionsController < ApplicationController
     end 
   end 
   
+  def import
+    Section.email.import(params[:file])
+    redirect_to section_roster_path, notice: "Emails added successfully"
+  end
+  
   def roster
     @section = Section.find(params[:section_id])
   end
@@ -76,7 +82,8 @@ class SectionsController < ApplicationController
               # remove email and student from section if email changes
               @section.emails.delete(email)
               remove_student(email.email, @section)
-              # need to check if the new email exists 
+              # need to check if the new email exists
+              # look at this for BULK
               existing_email = Email.find_by_email(email_atr[:email])
               if existing_email
                 @section.emails << existing_email unless @section.emails.include?(existing_email)
@@ -107,6 +114,10 @@ class SectionsController < ApplicationController
     else
       redirect_to section_projects_path(@section)
     end
+  end
+  
+  def update_roster_bulk
+    @section = Section.find(params[:section_id])
   end
   
   def join

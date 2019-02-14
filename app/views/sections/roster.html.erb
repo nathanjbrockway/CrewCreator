@@ -8,9 +8,25 @@
     <%= render 'email_fields', f: builder %>
   <% end %>
   <%= link_to_add_fields "Add Student Email", form, :emails %><br/>
+  
   <br/>
   <%= form.submit "Update Roster" %>
   
+<% end %>
+
+<div id="email_bulk_explanation">
+    <h3>Bulk Add Emails</h3>
+    <ul>
+      <li>Emails must be valid</li>
+      <li>Emails must be comma separated</li>
+    </ul>
+</div>
+
+<%= form_tag section_roster_path, multipart: true do %>
+  <%= file_field_tag :file %> <br/>
+  
+  <br/>
+  <%= submit_tag "Import CSV emails" %> <br/>
 <% end %>
 
 <br/>
