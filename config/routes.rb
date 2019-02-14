@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'emails/import'
+
   resources :skills, except: [:show]
-  resources :sections do
+  resources :emails do
     collection {post :import}
   end 
 

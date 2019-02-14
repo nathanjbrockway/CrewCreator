@@ -57,11 +57,6 @@ class SectionsController < ApplicationController
     end 
   end 
   
-  def import
-    Section.email.import(params[:file])
-    redirect_to section_roster_path, notice: "Emails added successfully"
-  end
-  
   def roster
     @section = Section.find(params[:section_id])
   end
